@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html lang="en"> 
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+       
+ 		<title>Rassoci - Sample</title> 
+		<script src="../lib/raphael.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../rassoci.js" type="text/javascript" charset="utf-8"></script>
+		
+        <style type="text/css" media="screen"> 
+    		body {
+			    background: #999;
+			    color: #fff;
+			    font: 300 100.1% "Monaco", Helvetica,sans-serif;
+			}
+
+			#holder {
+				-moz-border-radius: 10px;
+                -webkit-border-radius: 10px;
+                border: solid 1px #333;
+				background : #444;
+			    height: 480px;
+			    left: 50%;
+			    margin: -200px 0 0 -320px;
+			    position: absolute;
+			    top: 50%;
+			    width: 640px;
+			}
+
+			a, a:visited {
+				text-decoration : none;
+				color : #FFF;
+				font-size : 10pt;
+			}
+			
+            p {
+                text-align: center;
+            }
+        </style> 
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				var g = new Rassoci({ holder : 'holder'});
+			
+				$("a.rect").click(function() {
+					g.include('rect', 20, 20, 50, 50, 10);
+				});
+			
+				$("a.circle").click(function() {
+					g.include('circle', 200, 45, 30);
+				});
+			
+				$("a.eclipse").click(function() {
+					g.include('ellipse', 370, 40, 50, 30);
+				});
+			});
+		</script>
+    </head> 
+    <body> 
+        <p>Chose below a new Element to be created.</p> 
+		<p>
+			<a href="#" class='rect'>Create a new Rect.</a>
+			<a href="#" class='circle'>Create a new Circle.</a>
+			<a href="#" class='eclipse'>Create a new Ellipse.</a>
+		</p>
+        <div id="holder">
+        </div> 
+    </body> 
+</html>
