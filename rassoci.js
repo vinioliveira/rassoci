@@ -105,7 +105,7 @@
 				stageWork.source = this;
 
 				this.animate({"fill-opacity": .2}, 100);			
-				
+
 				var path = ['M',e.layerX, e.layerY,'L',e.layerX, e.layerY].join(',');
 				this.path = this.paper.path(path).attr({'stroke-dasharray': 10, stroke : '#fff'});
 				
@@ -164,7 +164,7 @@
 
 			var line; 
 
-			//In case that redraw line path pass just the object returned by this function
+			//In case of redraw line path, just pass the object returned by this function
 			if (source.path && source.from && source.to) {
 		        line = source;
 		        source = line.from;
@@ -175,16 +175,9 @@
 		        box2 = target.getBBox();
 
 			var fromX = box1.x + (box1.width / 2 ),
-				fromY = box1.y + (box1.height / 2 );
-
-			//Working around TODO change the way that we do this.
-			if(target.type == "circle"){
-				toX   = box2.x;
-				toY   = box2.y;
-			}else{
-				toX   = box2.x + ( box2.width / 2 );
+				fromY = box1.y + (box1.height / 2 ),
+				toX   = box2.x + ( box2.width / 2 ),
 				toY   = box2.y + ( box2.height / 2);
-			}
 
 			var path = ["M", fromX, fromY, "L", toX, toY].join(',');
 
