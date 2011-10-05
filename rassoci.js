@@ -1,6 +1,6 @@
-(function() {
+(function(w) {
 	
-	 r = function(options) {
+	 var r = function(options) {
 	
 		if( options == null && options.holder == null){
 			throw "No holder specified.";
@@ -237,5 +237,5 @@
 		}
 	}; 
 	
-	window.Rassoci = r;
-})();
+	w.Rassoci = r;
+}(window));
