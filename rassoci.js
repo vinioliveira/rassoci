@@ -77,8 +77,8 @@
 			target : null
 		};
 
-		self = this;
-		var defaultEvents = function(element) {
+		var self = this,
+		    defaultEvents = function(element) {
 		
 			el = (element || settings.collection);
 		
