@@ -22,7 +22,7 @@
 	
 		this.paper = settings.r;
   
-		this.init = function() {
+		var init = function() {
 			settings.r = settings.r || new Raphael(settings.holder, settings.width, settings.height);
 		};		
 	
@@ -80,7 +80,7 @@
 		var self = this,
 		    defaultEvents = function(element) {
 		
-			el = (element || settings.collection);
+			var el = (element || settings.collection);
 		
 			self.append('drag', el, move, dragger, drop);
 			self.append('hover', el, on, down);
@@ -192,7 +192,7 @@
 		    }
 		};
 	
-		this.init();
+		init();
 	};
 
 	r.scale = {
@@ -208,8 +208,8 @@
 			};
 		
 		 	function rescale() {
-				var scability = interpolate();
-				base = [];
+				var scability = interpolate(),
+					base = [];
 				base.push(range[0]);
 				for (var i=0; i < domain.length; i++) {
 					base.push(base[i] + scability);
