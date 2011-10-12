@@ -12,14 +12,18 @@
 			height 	   : (options.height || 450),
 			r 	   	   :  options.raphael ,
 			collection : (options.collection || []),
-			attrs	   : {
+			attrs	   : (options.attr || {
 				fill: '#fff', 
 				stroke: '#fff', 
 				"fill-opacity": 0, 
 				"stroke-width": 1
-			}
+			})
 		};
-	
+		
+		this.afterAssociate = function(cb) {
+			settings.afterAssociate = cb;
+		};
+		
 		this.paper = settings.r;
   
 		var init = function() {
@@ -100,17 +104,20 @@
 			},
 	
 			// Default behavior  to drag'n'drop 
-	     	dragger = function (x,y,e) {
+	     	dragger = function () {
 	
 				stageWork.source = this;
-
+				
+				var x = extractPostion(this.getBBox()).x;
+				var y = extractPostion(this.getBBox()).y;
+				
 				this.animate({"fill-opacity": .2}, 100);			
 
-				var path = ['M',e.layerX, e.layerY,'L',e.layerX, e.layerY].join(',');
-				this.path = this.paper.path(path).attr({'stroke-dasharray': 10, stroke : '#fff'});
+				var path = ['M',x, y,'L', x, y].join(',');
+				this.path = this.paper.path(path).attr(settings.attrs);
 				
-				this.ox = e.layerX;
-				this.oy = e.layerY;				
+				this.ox = x;
+				this.oy = y;				
 	
 	   	   },
 
@@ -127,7 +134,10 @@
 	
 				if(stageWork.target != null && stageWork.target != stageWork.source){
 					if(! exists(stageWork.target, stageWork.source, true)){
-						settings.collection.push(association(this, stageWork.target, '#fff'));					
+						settings.collection.push(association(this, stageWork.target, '#fff'));
+						if(settings.afterAssociate){
+							settings.afterAssociate.call(this, stageWork.source, stageWork.target);					
+						}
 					}
 				}
 		
@@ -174,10 +184,10 @@
 			var box1 = source.getBBox(),
 		        box2 = target.getBBox();
 
-			var fromX = box1.x + (box1.width / 2 ),
-				fromY = box1.y + (box1.height / 2 ),
-				toX   = box2.x + ( box2.width / 2 ),
-				toY   = box2.y + ( box2.height / 2);
+			var fromX = extractPostion(box1).x,
+			 	fromY = extractPostion(box1).y
+				toX   = extractPostion(box2).x,
+				toY   = extractPostion(box2).y;
 
 			var path = ["M", fromX, fromY, "L", toX, toY].join(',');
 
@@ -185,17 +195,24 @@
 		        line.path.attr({path: path});
 		    } else {
 		        return {
-		            path: settings.r.path(path).attr({'stroke-dasharray': 10, stroke : '#fff'}),
+		            path: settings.r.path(path).attr({'stroke-dasharray': 10, stroke : '#000'}),
 		            from: source,
 		            to: target
 		        };
 		    }
 		};
-	
+		
+		var extractPostion = function(box) {
+			return {
+				x : box.x + (box.width / 2 ),
+				y : box.y + (box.height / 2 )
+			}
+		};
+		
 		init();
 	};
 
-	r.scale = {
+	r.prototype.scale = {
 	
 		linear : function() {
 		
@@ -208,9 +225,11 @@
 			};
 		
 		 	function rescale() {
-				var scability = interpolate(),
-					base = [];
+				var scability = interpolate();
+				
+				base = [];
 				base.push(range[0]);
+				
 				for (var i=0; i < domain.length; i++) {
 					base.push(base[i] + scability);
 				};		
@@ -233,6 +252,7 @@
 			function interpolate(){
 				return Math.round( (range[1] - range[0]) / domain.length);
 			}
+		
 			return scale;
 		}
 	}; 
